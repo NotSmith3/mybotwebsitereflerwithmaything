@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore a comprehensive collection of resources on web development, design, and databases.">
+    <meta name="keywords" content="HTML, CSS, JavaScript, UI/UX, SQL, MongoDB">
+    <meta name="author" content="Your Name">
+    <title>Resources Explorer</title>
+    <link rel="stylesheet" href="res.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" role="navigation">
+        <div class="search-bar-container">
+            <input type="text" class="search-bar" placeholder="Search resources..." aria-label="Search resources">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+        </div>
+        <div class="category" role="tree">
+            <div class="category-header" role="heading" aria-level="2">📁 Categories</div>
+            <div class="folder" data-folder="web-development" role="treeitem" aria-expanded="false">
+                📂 Main
+                <div class="folder-content" role="group">
+                    <div class="file" data-file="html-guide" role="treeitem">📄 Basic Index</div>
+                    <div class="file" data-file="css-tricks" role="treeitem">📄 CSS Tricks</div>
+                    <div class="file" data-file="javascript-basics" role="treeitem">📄 JavaScript Basics</div>
+                </div>
+            </div>
+            <div class="folder" data-folder="design" role="treeitem" aria-expanded="false">
+                📂 Design
+                <div class="folder-content" role="group">
+                    <div class="file" data-file="ui-ux-principles" role="treeitem">📄 UI/UX Principles</div>
+                    <div class="file" data-file="color-theory" role="treeitem">📄 Color Theory</div>
+                </div>
+            </div>
+            <div class="folder" data-folder="databases" role="treeitem" aria-expanded="false">
+                📂 Databases
+                <div class="folder-content" role="group">
+                    <div class="file" data-file="sql-basics" role="treeitem">📄 SQL Basics</div>
+                    <div class="file" data-file="mongodb-guide" role="treeitem">📄 MongoDB Guide</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="breadcrumb">
+            <span class="breadcrumb-path">Home</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-path">Resources</span>
+        </div>
+        <div class="content-section" id="html-guide">
+            <h1>How to Set Up and Run Your Basic Bot</h1>
+        
+            <h2>1. Install Node.js</h2>
+            <p>
+                Make sure you have Node.js installed on your computer. You can download it from the official website:
+                <a href="https://nodejs.org/en" target="_blank">https://nodejs.org/en</a>
+            </p>
+        
+            <h2>2. Set Up the Project</h2>
+            <ol>
+                <li><strong>Create a New Folder:</strong> Choose a location on your computer and create a folder for your bot project. For example, name it <code>MyDiscordBot</code>.</li>
+                <li><strong>Navigate to the Folder:</strong> Open a terminal and navigate to the folder using the <code>cd</code> command:
+                    <pre><code>cd path/to/MyDiscordBot</code></pre>
+                </li>
+                <li><strong>Initialize the Project:</strong> Run the following command to create a <code>package.json</code> file:
+                    <pre><code>npm init -y</code></pre>
+                </li>
+            </ol>
+        
+            <h2>3. Install Dependencies</h2>
+            <p>Run the following command in the terminal to install the required packages:</p>
+            <pre><code>npm install discord.js dotenv</code></pre>
+        
+            <h2>4. Create Necessary Files</h2>
+            <ol>
+                <li>
+                    <strong>Create the Bot File:</strong> In your project folder, create a file called <code>index.js</code> and paste the bot's code into it.
+                </li>
+                <li>
+                    <strong>Create a <code>.env</code> File:</strong> In the same folder, create a file named <code>.env</code> and add:
+                    <pre><code>TOKEN=YOUR_BOT_TOKEN</code></pre>
+                    Replace <code>YOUR_BOT_TOKEN</code> with your bot token from the
+                    <a href="https://discord.com/developers/applications" target="_blank">Discord Developer Portal</a>.
+                </li>
+                <li>
+                    <strong>Create the Folders:</strong> Run the bot once to automatically create the <code>commands</code> and <code>events</code> folders.
+                </li>
+            </ol>
+        
+            <h2>5. Run the Bot</h2>
+            <p>Start the bot using this command:</p>
+            <pre><code>node index.js</code></pre>
+            <p>You should see a startup message in the console and a message indicating the bot is logged in.</p>
+        
+            <h2>6. Add Commands and Events</h2>
+            <p>Use the <code>commands</code> and <code>events</code> folders for modular bot functionality:</p>
+            <ul>
+                <li>
+                    <strong>Commands:</strong> Create a file in the <code>commands</code> folder, e.g., <code>ping.js</code>:
+                    <pre><code>module.exports = {
+            data: { name: 'ping' },
+            async execute(interaction) {
+                await interaction.reply('Pong!');
+            },
+        };</code></pre>
+                </li>
+                <li>
+                    <strong>Events:</strong> Create a file in the <code>events</code> folder, e.g., <code>ready.js</code>:
+                    <pre><code>module.exports = {
+            name: 'ready',
+            once: true,
+            execute(client) {
+                console.log(`${client.user.tag} is ready!`);
+            },
+        };</code></pre>
+                </li>
+            </ul>
+        
+            <h2>7. Invite Your Bot to a Server</h2>
+            <ol>
+                <li>Go to the <a href="https://discord.com/developers/applications" target="_blank">Discord Developer Portal</a>.</li>
+                <li>Open your bot's application and navigate to <strong>OAuth2 > URL Generator</strong>.</li>
+                <li>Select <strong>bot</strong> under Scopes and choose necessary permissions under Bot Permissions.</li>
+                <li>Copy the generated URL, paste it into your browser, and invite the bot to your server.</li>
+            </ol>
+        
+            <h2>8. Test Your Bot</h2>
+            <p>Start the bot again and test its commands and events in Discord.</p>
+        
+            <div class="content-section" id="html-guide">
+                <h1>How to Set Up and Run Your Basic Bot</h1>
+            
+                <h2>1. Install Node.js</h2>
+                <p>
+                    Make sure you have Node.js installed on your computer. You can download it from the official website:
+                    <a href="https://nodejs.org/en" target="_blank">https://nodejs.org/en</a>
+                </p>
+            
+                <h2>2. Set Up the Project</h2>
+                <ol>
+                    <li><strong>Create a New Folder:</strong> Choose a location on your computer and create a folder for your bot project. For example, name it <code>MyDiscordBot</code>.</li>
+                    <li><strong>Navigate to the Folder:</strong> Open a terminal and navigate to the folder using the <code>cd</code> command:
+                        <pre><code>cd path/to/MyDiscordBot</code></pre>
+                    </li>
+                    <li><strong>Initialize the Project:</strong> Run the following command to create a <code>package.json</code> file:
+                        <pre><code>npm init -y</code></pre>
+                    </li>
+                </ol>
+            
+                <h2>3. Install Dependencies</h2>
+                <p>Run the following command in the terminal to install the required packages:</p>
+                <pre><code>npm install discord.js dotenv</code></pre>
+            
+                <h2>4. Create Necessary Files</h2>
+                <ol>
+                    <li>
+                        <strong>Create the Bot File:</strong> Download the provided bot code by clicking the button below. Save it as <code>index.js</code> in your project folder.
+                        <br>
+                        <a href="voidsystems-basic-index.js" download="index.js" class="download-button">Download Bot Code</a>
+                    </li>
+                    <li>
+                        <strong>Create a <code>.env</code> File:</strong> In the same folder, create a file named <code>.env</code> and add:
+                        <pre><code>TOKEN=YOUR_BOT_TOKEN</code></pre>
+                        Replace <code>YOUR_BOT_TOKEN</code> with your bot token from the
+                        <a href="https://discord.com/developers/applications" target="_blank">Discord Developer Portal</a>.
+                    </li>
+                </ol>
+            
+                <h2>5. Run the Bot</h2>
+                <p>Start the bot using this command:</p>
+                <pre><code>node index.js</code></pre>
+                <p>You should see a startup message in the console and a message indicating the bot is logged in.</p>
+            
+                <h2>6. Add Commands and Events</h2>
+                <p>Use the <code>commands</code> and <code>events</code> folders for modular bot functionality:</p>
+                <ul>
+                    <li>
+                        <strong>Commands:</strong> Create a file in the <code>commands</code> folder, e.g., <code>ping.js</code>:
+                        <pre><code>module.exports = {
+                data: { name: 'ping' },
+                async execute(interaction) {
+                    await interaction.reply('Pong!');
+                },
+            };</code></pre>
+                    </li>
+                    <li>
+                        <strong>Events:</strong> Create a file in the <code>events</code> folder, e.g., <code>ready.js</code>:
+                        <pre><code>module.exports = {
+                name: 'ready',
+                once: true,
+                execute(client) {
+                    console.log(`${client.user.tag} is ready!`);
+                },
+            };</code></pre>
+                    </li>
+                </ul>
+            
+                <h2>7. Invite Your Bot to a Server</h2>
+                <ol>
+                    <li>Go to the <a href="https://discord.com/developers/applications" target="_blank">Discord Developer Portal</a>.</li>
+                    <li>Open your bot's application and navigate to <strong>OAuth2 > URL Generator</strong>.</li>
+                    <li>Select <strong>bot</strong> under Scopes and choose necessary permissions under Bot Permissions.</li>
+                    <li>Copy the generated URL, paste it into your browser, and invite the bot to your server.</li>
+                </ol>
+            
+                <h2>8. Test Your Bot</h2>
+                <p>Start the bot again and test its commands and events in Discord.</p>
+            
+                <style>
+                    .download-button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        color: #fff;
+                        background-color: #007BFF;
+                        text-decoration: none;
+                        border-radius: 5px;
+                        margin-top: 10px;
+                    }
+            
+                    .download-button:hover {
+                        background-color: #0056b3;
+                    }
+                </style>
+            </div>
+            
+        </div>
+        
+        <div class="content-section" id="css-tricks">
+            <h1>CSS Tricks</h1>
+            <p>Learn some advanced CSS techniques.</p>
+            <pre><code>.example { display: flex; justify-content: center; }</code></pre>
+        </div>
+        <div class="content-section" id="javascript-basics">
+            <h1>JavaScript Basics</h1>
+            <p>Get started with JavaScript programming.</p>
+            <pre><code>console.log("Hello, World!");</code></pre>
+        </div>
+        <div class="content-section" id="ui-ux-principles">
+            <h1>UI/UX Principles</h1>
+            <p>Understand the fundamentals of UI/UX design.</p>
+        </div>
+        <div class="content-section" id="color-theory">
+            <h1>Color Theory</h1>
+            <p>Explore the science and art of color.</p>
+        </div>
+        <div class="content-section" id="sql-basics">
+            <h1>SQL Basics</h1>
+            <p>Learn the basics of SQL for database management.</p>
+            <pre><code>SELECT * FROM users;</code></pre>
+        </div>
+        <div class="content-section" id="mongodb-guide">
+            <h1>MongoDB Guide</h1>
+            <p>Get started with MongoDB, a NoSQL database.</p>
+            <pre><code>db.collection.find({});</code></pre>
+        </div>
+    </div>
+
+    <!-- Floating Table of Contents -->
+    <div class="floating-toc">
+        <div class="toc-title">Table of Contents</div>
+        <ul class="toc-list">
+            <li class="toc-item" data-target="html-guide">HTML Guide</li>
+            <li class="toc-item" data-target="css-tricks">CSS Tricks</li>
+            <li class="toc-item" data-target="javascript-basics">JavaScript Basics</li>
+            <li class="toc-item" data-target="ui-ux-principles">UI/UX Principles</li>
+            <li class="toc-item" data-target="color-theory">Color Theory</li>
+            <li class="toc-item" data-target="sql-basics">SQL Basics</li>
+            <li class="toc-item" data-target="mongodb-guide">MongoDB Guide</li>
+        </ul>
+    </div>
+
+    <!-- Go Home Button -->
+    <a href="index.html" class="go-home-button">Home</a>
+
+    <script src="script.js"></script>
+</body>
+</html>

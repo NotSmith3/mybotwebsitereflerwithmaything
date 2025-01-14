@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="Logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role Designer</title>
+    <a href="index.html" class="go-home-button">Home</a>
+
+    <style>
+        :root {
+            --primary: #6e44ff;
+            --primary-dark: #5a2ee6;
+            --background: #0a0a0f;
+            --surface: #1a1a2e;
+            --surface-hover: #252540;
+            --text: #ffffff;
+            --text-secondary: #b0b0b0;
+            --glow: rgba(110, 68, 255, 0.8);
+            --error: #ff4444;
+            --success: #44ff44;
+            --transition-speed: 0.3s;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: linear-gradient(145deg, var(--surface), var(--background));
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--text));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px var(--glow);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color var(--transition-speed);
+        }
+
+        label:hover {
+            color: var(--text);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--background);
+            border: 1px solid rgba(110, 68, 255, 0.3);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all var(--transition-speed);
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 40px;
+            padding: 0.25rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--background);
+            cursor: pointer;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--glow);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: var(--text);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all var(--transition-speed);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(110, 68, 255, 0.4);
+        }
+
+        .preview-box {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(110, 68, 255, 0.3);
+            transition: all var(--transition-speed);
+        }
+
+        .preview-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--glow);
+            background: var(--surface-hover);
+        }
+
+        .preview-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--background);
+            background-size: cover;
+            background-position: center;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 20px var(--glow);
+            transition: all var(--transition-speed);
+        }
+
+        .avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        #previewName {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            transition: all var(--transition-speed);
+        }
+
+        .status {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success);
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            background: rgba(110, 68, 255, 0.2);
+            border-radius: 15px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            background-color: var(--surface);
+            color: var(--text);
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity var(--transition-speed);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .go-home-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(110, 68, 255, 0.4);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.go-home-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px var(--glow);
+}
+
+.go-home-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(110, 68, 255, 0.6);
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Discord Role Designer</h1>
+        
+        <div class="grid-container">
+            <div class="input-group">
+                <label for="roleName">Role Name</label>
+                <input type="text" id="roleName" placeholder="Enter role name" maxlength="32">
+            </div>
+
+            <div class="input-group">
+                <label for="emojiPicker">Role Emoji</label>
+                <select id="emojiPicker">
+                    <option value="">None</option>
+                    <option value="🔥">🔥 Fire</option>
+                    <option value="⭐">⭐ Star</option>
+                    <option value="🌟">🌟 Glow</option>
+                    <option value="💎">💎 Diamond</option>
+                    <option value="🎮">🎮 Gaming</option>
+                    <option value="🎨">🎨 Artist</option>
+                    <option value="🛡️">🛡️ Moderator</option>
+                    <option value="👑">👑 Admin</option>
+                    <option value="🎯">🎯 Expert</option>
+                    <option value="🌈">🌈 Rainbow</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="input-group">
+                <label for="roleColor">Role Color</label>
+                <input type="color" id="roleColor" value="#6e44ff">
+            </div>
+
+            <div class="input-group">
+                <label for="fontSize">Font Size (px)</label>
+                <input type="number" id="fontSize" value="18" min="12" max="24">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label for="status">Custom Status</label>
+            <input type="text" id="status" placeholder="Set custom status" maxlength="128">
+        </div>
+
+        <div class="input-group">
+            <label for="icon">Profile Icon</label>
+            <select id="icon">
+                <option value="https://cdn.discordapp.com/embed/avatars/0.png">Default Icon</option>
+                <option value="https://cdn.discordapp.com/embed/avatars/1.png">Blue Icon</option>
+                <option value="https://cdn.discordapp.com/embed/avatars/2.png">Green Icon</option>
+                <option value="https://cdn.discordapp.com/embed/avatars/3.png">Orange Icon</option>
+                <option value="https://cdn.discordapp.com/embed/avatars/4.png">Red Icon</option>
+            </select>
+        </div>
+
+        <div class="preview-box">
+            <div class="preview-content">
+                <div class="avatar" id="avatar"></div>
+                <div class="user-info">
+                    <div id="previewName" class="tooltip">
+                        Username
+                        <span class="tooltiptext">Click to copy role settings</span>
+                    </div>
+                    <div class="status" id="statusDisplay">Online</div>
+                    <div class="badges">
+                        <span class="badge" id="roleBadge">Role</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button id="resetBtn">Reset</button>
+            <button id="copyBtn">Copy Settings</button>
+        </div>
+        
+        
+    </div>
+
+    <script>
+        const roleName = document.getElementById('roleName');
+        const roleColor = document.getElementById('roleColor');
+        const fontSize = document.getElementById('fontSize');
+        const status = document.getElementById('status');
+        const iconSelect = document.getElementById('icon');
+        const avatar = document.getElementById('avatar');
+        const previewName = document.getElementById('previewName');
+        const statusDisplay = document.getElementById('statusDisplay');
+        const emojiPicker = document.getElementById('emojiPicker');
+        const roleBadge = document.getElementById('roleBadge');
+        const resetBtn = document.getElementById('resetBtn');
+        const copyBtn = document.getElementById('copyBtn');
+
+        const defaultSettings = {
+            name: 'Username',
+            color: '#6e44ff',
+            size: '18',
+            statusText: 'Online',
+            icon: 'https://cdn.discordapp.com/embed/avatars/0.png',
+            emoji: ''
+        };
+
+        function updatePreview() {
+            const name = roleName.value || defaultSettings.name;
+            const color = roleColor.value;
+            const size = Math.min(Math.max(fontSize.value || 18, 12), 24);
+            const customStatus = status.value || defaultSettings.statusText;
+            const icon = iconSelect.value;
+            const emoji = emojiPicker.value;
+
+            previewName.innerHTML = `${emoji} ${name}`;
+            previewName.style.color = color;
+            previewName.style.fontSize = `${size}px`;
+            statusDisplay.textContent = customStatus;
+            avatar.style.backgroundImage = `url(${icon})`;
+            roleBadge.textContent = name;
+            roleBadge.style.backgroundColor = `${color}33`;
+            roleBadge.style.color = color;
+        }
+
+        function resetSettings() {
+            roleName.value = '';
+            roleColor.value = defaultSettings.color;
+            fontSize.value = defaultSettings.size;
+            status.value = '';
+            iconSelect.value = defaultSettings.icon;
+            emojiPicker.value = defaultSettings.emoji;
+            updatePreview();
+        }
+
+        function copySettings() {
+            const settings = {
+                name: roleName.value || defaultSettings.name,
+                color: roleColor.value,
+                size: fontSize.value,
+                emoji: emojiPicker.value,
+                status: status.value || defaultSettings.statusText
+            };
+
+            navigator.clipboard.writeText(JSON.stringify(settings, null, 2))
+                .then(() => {
+                    previewName.style.textShadow = '0 0 10px var(--success)';
+                    setTimeout(() => {
+                        previewName.style.textShadow = 'none';
+                    }, 1000);
+                })
+                .catch(err => {
+                    previewName.style.textShadow = '0 0 10px var(--error)';
+                    setTimeout(() => {
+                        previewName.style.textShadow = 'none';
+                    }, 1000);
+                });
+        }
+
+        // Event Listeners
+        roleName.addEventListener('input', updatePreview);
+        roleColor.addEventListener('input', updatePreview);
+        fontSize.addEventListener('input', updatePreview);
+        status.addEventListener('input', updatePreview);
+        iconSelect.addEventListener('change', updatePreview);
+        emojiPicker.addEventListener('change', updatePreview);
+        resetBtn.addEventListener('click', resetSettings);
+        copyBtn.addEventListener('click', copySettings);
+        previewName.addEventListener('click', copySettings);
+
+        // Initialize
+        updatePreview();
+    </script>
+</body>
+</html>

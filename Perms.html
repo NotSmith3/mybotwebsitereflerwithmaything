@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="Logo.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <a href="index.html" class="go-home-button">Home</a>
+
+  <title>Invite Generator</title>
+  <style>
+:root {
+  --primary: #6e44ff;
+  --primary-dark: #5a2ee6;
+  --background: #0a0a0f;
+  --surface: #1a1a2e;
+  --text: #ffffff;
+  --text-secondary: #b0b0b0;
+  --glow: rgba(110, 68, 255, 0.8);
+  --transition-speed: 0.3s;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.container {
+  background-color: var(--surface);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  max-width: 800px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 15px;
+  border: 1px solid transparent;
+  background: linear-gradient(145deg, transparent, rgba(110, 68, 255, 0.1));
+  z-index: -1;
+  transition: all var(--transition-speed) ease;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  margin-bottom: 1.5rem;
+  background: linear-gradient(45deg, var(--text), var(--primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 20px var(--glow);
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background-color: var(--background);
+  color: var(--text);
+  font-size: 16px;
+  transition: all var(--transition-speed);
+}
+
+input[type="text"]:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 10px var(--glow);
+}
+
+.error-message {
+  color: #ed4245;
+  font-size: 14px;
+  margin-top: 5px;
+  display: none;
+}
+
+.permissions-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.permission-category {
+  background-color: var(--background);
+  border-radius: 10px;
+  padding: 15px;
+  transition: transform var(--transition-speed) ease;
+}
+
+.permission-category:hover {
+  transform: translateY(-5px);
+}
+
+.category-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--glow);
+}
+
+.permission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+.permission-item:hover {
+  background-color: rgba(110, 68, 255, 0.1);
+}
+
+.permission-item input {
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 12px;
+  font-size: 16px;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+button:hover {
+  background-color: transparent;
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(110, 68, 255, 0.4);
+}
+
+button.secondary {
+  background-color: var(--background);
+}
+
+.generated-link {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--background);
+  border-radius: 10px;
+  color: var(--text);
+  word-break: break-all;
+  display: none;
+  font-family: monospace;
+  border: 1px solid var(--primary);
+  box-shadow: 0 0 10px var(--glow);
+}
+
+.copy-button {
+  margin-top: 10px;
+  background-color: var(--background);
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .permissions-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+  border: 3px solid var(--surface);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--surface);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip:hover::after {
+  content: attr(data-description);
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  transform: translateX(-50%);
+  background-color: var(--surface);
+  color: var(--text-secondary);
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--primary);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-speed), transform var(--transition-speed);
+}
+
+.tooltip:hover::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: var(--surface) transparent transparent transparent;
+  z-index: 9;
+  opacity: 0;
+  transition: opacity var(--transition-speed);
+}
+
+.tooltip:hover::after,
+.tooltip:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.go-home-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(110, 68, 255, 0.4);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.go-home-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px var(--glow);
+}
+
+.go-home-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(110, 68, 255, 0.6);
+}
+
+  </style>
+  
+</head>
+
+<body>
+  <div class="container">
+    <h2>Discord Bot Invite Generator</h2>
+    <div class="input-group">
+      <input type="text" id="clientId" placeholder="Enter your bot's Client ID" maxlength="20">
+      <div class="error-message" id="clientIdError">Invalid Client ID. Please enter a valid one.</div>
+    </div>
+    
+    <div class="actions">
+      <button id="selectAll">
+        <i class="fa-solid fa-check-square"></i> Select All
+      </button>
+      <button id="deselectAll" class="secondary">
+        <i class="fa-solid fa-square"></i> Deselect All
+      </button>
+    </div>
+
+    <div class="permissions-container">
+      <div class="permission-category">
+        <div class="category-title">General Permissions</div>
+        <div class="permission-list">
+          <label class="permission-item tooltip" data-description="Grants full access to all server features and permissions.">
+            <input type="checkbox" data-perm="8"> Administrator
+          </label>
+          <label class="permission-item tooltip" data-description="Allows the bot to view all channels, even those it doesn't have explicit access to.">
+            <input type="checkbox" data-perm="2147483648"> View Channels
+          </label>
+          <label class="permission-item tooltip" data-description="Allows managing webhooks in text channels.">
+            <input type="checkbox" data-perm="1099511627776"> Manage Webhooks
+          </label>
+          <label class="permission-item tooltip" data-description="Allows managing channels (e.g., rename, delete).">
+            <input type="checkbox" data-perm="16"> Manage Channels
+          </label>
+          <label class="permission-item tooltip" data-description="Allows creating, deleting, and managing roles.">
+            <input type="checkbox" data-perm="32"> Manage Roles
+          </label>
+          <label class="permission-item tooltip" data-description="Allows viewing the server's audit log.">
+            <input type="checkbox" data-perm="268435456"> View Audit Log
+          </label>
+        </div>
+      </div>
+
+      <div class="permission-category">
+        <div class="category-title">Member Permissions</div>
+        <div class="permission-list">
+          <label class="permission-item tooltip" data-description="Allows kicking members from the server.">
+            <input type="checkbox" data-perm="2"> Kick Members
+          </label>
+          <label class="permission-item tooltip" data-description="Allows banning members from the server.">
+            <input type="checkbox" data-perm="4"> Ban Members
+          </label>
+          <label class="permission-item tooltip" data-description="Allows creating instant invites to channels.">
+            <input type="checkbox" data-perm="1"> Create Instant Invite
+          </label>
+          <label class="permission-item tooltip" data-description="Allows changing the bot's nickname.">
+            <input type="checkbox" data-perm="1048576"> Change Nickname
+          </label>
+          <label class="permission-item tooltip" data-description="Allows managing nicknames of members.">
+            <input type="checkbox" data-perm="134217728"> Manage Nicknames
+          </label>
+          <label class="permission-item tooltip" data-description="Allows managing emojis in the server.">
+            <input type="checkbox" data-perm="4194304"> Manage Emojis
+          </label>
+        </div>
+      </div>
+
+      <div class="permission-category">
+        <div class="category-title">Text Permissions</div>
+        <div class="permission-list">
+          <label class="permission-item tooltip" data-description="Allows sending messages in text channels.">
+            <input type="checkbox" data-perm="2048"> Send Messages
+          </label>
+          <label class="permission-item tooltip" data-description="Allows deleting or pinning messages.">
+            <input type="checkbox" data-perm="8192"> Manage Messages
+          </label>
+          <label class="permission-item tooltip" data-description="Allows reading message history in channels.">
+            <input type="checkbox" data-perm="32768"> Read Message History
+          </label>
+          <label class="permission-item tooltip" data-description="Allows mentioning @everyone or @here.">
+            <input type="checkbox" data-perm="65536"> Mention Everyone
+          </label>
+          <label class="permission-item tooltip" data-description="Allows using external emojis from other servers.">
+            <input type="checkbox" data-perm="137438953472"> Use External Emojis
+          </label>
+          <label class="permission-item tooltip" data-description="Allows adding reactions to messages.">
+            <input type="checkbox" data-perm="274877906944"> Add Reactions
+          </label>
+        </div>
+      </div>
+
+      <div class="permission-category">
+        <div class="category-title">Voice Permissions</div>
+        <div class="permission-list">
+          <label class="permission-item tooltip" data-description="Allows connecting to voice channels.">
+            <input type="checkbox" data-perm="1048576"> Connect
+          </label>
+          <label class="permission-item tooltip" data-description="Allows speaking in voice channels.">
+            <input type="checkbox" data-perm="2097152"> Speak
+          </label>
+          <label class="permission-item tooltip" data-description="Allows muting members in voice channels.">
+            <input type="checkbox" data-perm="4194304"> Mute Members
+          </label>
+          <label class="permission-item tooltip" data-description="Allows deafening members in voice channels.">
+            <input type="checkbox" data-perm="8388608"> Deafen Members
+          </label>
+          <label class="permission-item tooltip" data-description="Allows moving members between voice channels.">
+            <input type="checkbox" data-perm="16777216"> Move Members
+          </label>
+          <label class="permission-item tooltip" data-description="Allows using voice activity instead of push-to-talk.">
+            <input type="checkbox" data-perm="33554432"> Use Voice Activity
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <button id="generateLink">
+      <i class="fa-solid fa-gamepad"></i> Generate Invite Link
+    </button>      
+    
+    <div class="generated-link" id="inviteLink"></div>
+    <button class="copy-button" id="copyButton">
+      <i class="fa-solid fa-copy"></i> Copy Link
+    </button>
+  </div>
+</body>
+
+  </div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+  <script>
+    const clientIdInput = document.getElementById('clientId');
+    const clientIdError = document.getElementById('clientIdError');
+    const permissions = document.querySelectorAll('.permission-item input');
+    const generateButton = document.getElementById('generateLink');
+    const inviteLinkDiv = document.getElementById('inviteLink');
+    const copyButton = document.getElementById('copyButton');
+    const selectAllButton = document.getElementById('selectAll');
+    const deselectAllButton = document.getElementById('deselectAll');
+
+    selectAllButton.addEventListener('click', () => {
+      permissions.forEach(perm => perm.checked = true);
+    });
+
+    deselectAllButton.addEventListener('click', () => {
+      permissions.forEach(perm => perm.checked = false);
+    });
+
+    generateButton.addEventListener('click', () => {
+      const clientId = clientIdInput.value.trim();
+      if (!/^\d{17,20}$/.test(clientId)) {
+        clientIdError.style.display = 'block';
+        return;
+      }
+      
+      clientIdError.style.display = 'none';
+      let permissionsSum = BigInt(0);
+      
+      permissions.forEach(perm => {
+        if (perm.checked) {
+          permissionsSum += BigInt(perm.dataset.perm);
+        }
+      });
+      
+      const inviteLink = `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=${permissionsSum}&scope=bot%20applications.commands`;
+      inviteLinkDiv.textContent = inviteLink;
+      inviteLinkDiv.style.display = 'block';
+      copyButton.style.display = 'block';
+    });
+
+    copyButton.addEventListener('click', () => {
+      navigator.clipboard.writeText(inviteLinkDiv.textContent).then(() => {
+        copyButton.textContent = 'Copied!';
+        setTimeout(() => {
+          copyButton.textContent = 'Copy Link';
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>
